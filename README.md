@@ -3,12 +3,12 @@ Android Road Traffic application which pulls down data from the Highways Agency 
 
 This uses a number of my own librarues
 
-HA RSS Parser
-=============
+- HA RSS Parser
+
 https://github.com/alistairrutherford/traffic-rss-ha
 
-East CP - Makes creating a Content Provider a breeze.
------------------------------------------------------
+- Easy CP - Makes creating a Content Provider a breeze.
+
 https://github.com/alistairrutherford/easy-cp
 
 Main Screen
