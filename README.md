@@ -15,6 +15,10 @@ Android Road Traffic application which pulls down data from the Highways Agency 
 
 This uses a number of my own libraries
 
+- Base RSS pull parser (nice and fast).
+
+https://github.com/alistairrutherford/netthreads-rss-pullparser
+
 - HA RSS Parser
 
 https://github.com/alistairrutherford/traffic-rss-ha
