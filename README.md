@@ -1,6 +1,13 @@
 # traffic-ha-rss
 Android Road Traffic application which pulls down data from the Highways Agency  RSS feed and displays it as a RecyclerView based list.
 
+![Demo](https://github.com/alistairrutherford/images/raw/master/traffic-ha-rss-1.png) 
+
+![Demo](https://github.com/alistairrutherford/images/raw/master/traffic-ha-rss-2.png) 
+
+![Demo](https://github.com/alistairrutherford/images/raw/master/traffic-ha-rss-3.png) 
+
+
 
 License
 --------
