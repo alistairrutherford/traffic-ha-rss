@@ -1,0 +1,71 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.netthreads.test.view.DetailsActivity$PlaceholderFragment">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/top_card"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/outer_margin"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/event_image"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center_vertical"
+                style="@style/ListImageAppearance"
+                android:contentDescription="@string/severity_icon_text"/>
+
+            <TextView
+                android:id="@+id/event_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/default_text"
+                android:layout_gravity="center_vertical"
+                style="@style/ListMainTextAppearance"
+                android:contentDescription="@string/location_text"/>
+
+
+            <TextView
+                android:id="@+id/event_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/default_text"
+                android:layout_gravity="center_vertical"
+                style="@style/ListMainDimishedTextAppearance"
+                android:contentDescription="@string/category_text"
+                android:layout_marginLeft="6dp"/>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/bottom_card"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_below="@id/top_card"
+        android:layout_margin="@dimen/outer_margin">
+
+        <TextView
+            android:id="@+id/event_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:text="@string/default_text"
+            style="@style/ListSecondaryTextAppearance"
+            android:contentDescription="@string/description_text"
+            android:padding="6dp"/>
+
+    </android.support.v7.widget.CardView>
+
+
+</RelativeLayout>

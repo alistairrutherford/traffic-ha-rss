@@ -1,0 +1,9 @@
+<resources>
+    <color name="list_main_text">#de000000</color>
+    <color name="list_secondary_text">#8a000000</color>
+
+    <drawable name="transparent">#00ffffff</drawable>
+    <drawable name="altercolor1">#3D557B</drawable>
+    <drawable name="altercolor2">#304361</drawable>
+
+</resources>

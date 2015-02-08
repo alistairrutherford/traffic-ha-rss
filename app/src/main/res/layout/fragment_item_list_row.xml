@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:background="@drawable/border">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/event_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+                    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+                    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+                    android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+                    style="@style/ListAppearance">
+
+        <ImageView
+            android:id="@+id/event_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerVertical="true"
+            style="@style/ListImageAppearance"
+            android:contentDescription="@string/severity_icon_text"/>
+
+        <RelativeLayout
+            android:id="@+id/event_details_top_right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/event_image"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/event_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/default_text"
+                style="@style/ListMainTextAppearance"
+                android:contentDescription="@string/location_text"/>
+
+            <TextView
+                android:id="@+id/event_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/event_location"
+                android:singleLine="false"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:text="@string/default_text"
+                style="@style/ListSecondaryTextAppearance"
+                android:contentDescription="@string/description_text"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/event_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignEnd="@id/event_details_top_right"
+            android:text="@string/default_text"
+            android:contentDescription="@string/category_text"
+            style="@style/ListMainDimishedTextAppearance"/>
+
+
+    </RelativeLayout>
+
+</FrameLayout>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <!-- Category default values -->
+    <string-array name="multi_select_event_types_default_values">
+        <item>accident</item>
+		<item>incident</item>
+        <item>congestion</item>
+        <item>roadwork</item>
+    </string-array>
+
+    <!-- Category types as displayed in the application -->
+    <string-array name="multi_select_event_types">
+        <item>Accidents</item>
+        <item>Incidents</item>
+        <item>Congestion</item>
+        <item>Roadworks</item>
+    </string-array>
+
+    <!-- Category values mapped to types -->
+    <string-array name="multi_select_event_values">
+        <item>accident</item>
+        <item>incident</item>
+        <item>congestion</item>
+        <item>roadwork</item>
+    </string-array>
+
+</resources>

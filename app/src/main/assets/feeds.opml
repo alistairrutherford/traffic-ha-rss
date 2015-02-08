@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0"> 
+   <head>
+       <title>Highways Agency Traffic RSS Feeds</title>
+       <dateCreated>2009-10-03 12:00:00</dateCreated>
+       <!-- Note the 'breaking news' feed does not contain positional information so we do not parse it --> 
+   </head>
+   <body>
+		<outline title="All" text="All" xmlUrl="http://hatrafficinfo.dft.gov.uk/feeds/rss/UnplannedEvents.xml" />
+		<outline title="South East" text="South East" xmlUrl="http://hatrafficinfo.dft.gov.uk/feeds/rss/UnplannedEvents/South%20East.xml" />
+		<outline title="South West" text="South West" xmlUrl="http://hatrafficinfo.dft.gov.uk/feeds/rss/UnplannedEvents/South%20West.xml" />
+		<outline title="Eastern" text="Eastern" xmlUrl="http://hatrafficinfo.dft.gov.uk/feeds/rss/UnplannedEvents/Eastern.xml" />
+		<outline title="West Midlands" text="West Midlands" xmlUrl="http://hatrafficinfo.dft.gov.uk/feeds/rss/UnplannedEvents/West%20Midlands.xml" />
+		<outline title="East Midlands" text="East Midlands" xmlUrl="http://hatrafficinfo.dft.gov.uk/feeds/rss/UnplannedEvents/East%20Midlands.xml" />
+		<outline title="North West" text="North West" xmlUrl="http://hatrafficinfo.dft.gov.uk/feeds/rss/UnplannedEvents/North%20West.xml" />
+		<outline title="North East" text="North East" xmlUrl="http://hatrafficinfo.dft.gov.uk/feeds/rss/UnplannedEvents/North%20East.xml" />
+        <outline title="A1" text="Incidents and events affecting the A1 RSS Feed" xmlUrl="http://hatrafficinfo.dft.gov.uk/feeds/rss/UnplannedEvents/A1.xml" />
+		<outline title="A1(M)" text="Incidents and events affecting the A1(M) RSS Feed" xmlUrl="http://hatrafficinfo.dft.gov.uk/feeds/rss/UnplannedEvents/A1(M).xml" />
+		<outline title="M25" text="Incidents and events affecting the M25 RSS Feed" xmlUrl="http://hatrafficinfo.dft.gov.uk/feeds/rss/UnplannedEvents/M25.xml" />
+		<outline title="M1" text="Incidents and events affecting the M1 RSS Feed" xmlUrl="http://hatrafficinfo.dft.gov.uk/feeds/rss/UnplannedEvents/M1.xml" />
+		<outline title="M2" text="Incidents and events affecting the M2 RSS Feed" xmlUrl="http://hatrafficinfo.dft.gov.uk/feeds/rss/UnplannedEvents/M2.xml" />
+		<outline title="M3" text="Incidents and events affecting the M3 RSS Feed" xmlUrl="http://hatrafficinfo.dft.gov.uk/feeds/rss/UnplannedEvents/M3.xml"  />
+		<outline title="M4" text="Incidents and events affecting the M4 RSS Feed" xmlUrl="http://hatrafficinfo.dft.gov.uk/feeds/rss/UnplannedEvents/M4.xml" />
+		<outline title="M5" text="Incidents and events affecting the M5 RSS Feed" xmlUrl="http://hatrafficinfo.dft.gov.uk/feeds/rss/UnplannedEvents/M5.xml" />
+		<outline title="M6" text="Incidents and events affecting the M6 RSS Feed" xmlUrl="http://hatrafficinfo.dft.gov.uk/feeds/rss/UnplannedEvents/M6.xml" />
+		<outline title="M40" text="Incidents and events affecting the M40 RSS Feed" xmlUrl="http://hatrafficinfo.dft.gov.uk/feeds/rss/UnplannedEvents/M40.xml" />
+		<outline title="M42" text="Incidents and events affecting the M42 RSS Feed" xmlUrl="http://hatrafficinfo.dft.gov.uk/feeds/rss/UnplannedEvents/M42.xml" />
+		<outline title="M60" text="Incidents and events affecting the M60 RSS Feed" xmlUrl="http://hatrafficinfo.dft.gov.uk/feeds/rss/UnplannedEvents/M60.xml" />
+		<outline title="M62" text="Incidents and events affecting the M62 RSS Feed" xmlUrl="http://hatrafficinfo.dft.gov.uk/feeds/rss/UnplannedEvents/M62.xml" />
+		<outline title="M621" text="Incidents and events affecting the M621 RSS Feed" xmlUrl="http://hatrafficinfo.dft.gov.uk/feeds/rss/UnplannedEvents/M621.xml" />
+
+   </body>
+</opml>
