@@ -1,13 +1,25 @@
 # traffic-ha-rss
 Android Road Traffic application which pulls down data from the Highways Agency  RSS feed and displays it as a RecyclerView based list.
 
-This uses a number of my own librarues
+- Navigation drawer.
+- Recycler View list.
+- Severity icons
+- Multi text rows.
+- Cardview based details view.
+- Background loader.
+- Actionbar support libraries.
+- Settings View.
+- Filterable category types.
+- Content provider persistence.
+- Android Studio based project.
+
+This uses a number of my own libraries
 
 - HA RSS Parser
 
 https://github.com/alistairrutherford/traffic-rss-ha
 
-- Easy CP - Makes creating a Content Provider a breeze.
+- Easy CP - Makes creating a Content Provider a breeze. This has been embedded as a module into the project.
 
 https://github.com/alistairrutherford/easy-cp
 
