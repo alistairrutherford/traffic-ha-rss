@@ -1,5 +1,6 @@
 package com.netthreads.traffic;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,6 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.netthreads.traffic.view.NavigationDrawerFragment;
 import com.netthreads.traffic.view.TrafficDataListFragment;
 
@@ -67,6 +70,29 @@ public class MainActivity extends ActionBarActivity
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         boolean loadOnStartup = sharedPreferences.getBoolean(SettingsActivity.PREF_UPDATE_ON_START, SettingsActivity.DEFAULT_PREF_UPDATE_ON_START);
         boolean autoUpdate = sharedPreferences.getBoolean(SettingsActivity.PREF_AUTO_UPDATE, SettingsActivity.DEFAULT_PREF_AUTO_UPDATE);
+    }
+
+    /**
+     * Check for Google Play services and direct user to play store if not found.
+     *
+     */
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+
+        // Check for google play services (which supplies google maps).
+        int connectionResult = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+
+        if (connectionResult != ConnectionResult.SUCCESS)
+        {
+            Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(connectionResult, this, -1);
+
+            if (errorDialog != null)
+            {
+                errorDialog.show();
+            }
+        }
     }
 
     /**

@@ -27,5 +27,7 @@
     <string name="pref_incident_select_summary">Filter event types from events list.</string>
     <string name="pref_processing_settings_title">Operation Settings.</string>
     <string name="pref_interface_settings_title">Interface Settings.</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
