@@ -27,6 +27,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.netthreads.traffic.R;
 
 /**
@@ -35,6 +37,9 @@ import com.netthreads.traffic.R;
  */
 public class TrafficDataMapFragment extends Fragment
 {
+    public static final String ARG_LAT = "lat";
+    public static final String ARG_LNG = "lng";
+
     public TrafficDataMapFragment()
     {
     }

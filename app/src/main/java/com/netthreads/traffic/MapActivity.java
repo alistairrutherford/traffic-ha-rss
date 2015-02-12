@@ -28,18 +28,30 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.netthreads.traffic.domain.TrafficRecord;
+import com.netthreads.traffic.view.TrafficDataDetailsFragment;
 import com.netthreads.traffic.view.TrafficDataMapFragment;
 
 public class MapActivity extends ActionBarActivity
 {
+    public static final String ARG_ITEM = "item";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_map);
+
+        // Extract bundle item.
+        TrafficRecord data = (TrafficRecord) getIntent().getSerializableExtra(ARG_ITEM);
+
         if (savedInstanceState == null)
         {
+            Bundle bundle = new Bundle();
+            bundle.putString(TrafficDataMapFragment.ARG_LAT, data.getLatitude());
+            bundle.putString(TrafficDataMapFragment.ARG_LNG, data.getLongitude());
+
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new TrafficDataMapFragment())
                     .commit();

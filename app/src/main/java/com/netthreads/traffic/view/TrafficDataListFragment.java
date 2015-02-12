@@ -40,6 +40,7 @@ import android.widget.Toast;
 
 import com.netthreads.traffic.DetailsActivity;
 import com.netthreads.traffic.MainActivity;
+import com.netthreads.traffic.MapActivity;
 import com.netthreads.traffic.R;
 import com.netthreads.traffic.domain.TrafficRecord;
 import com.netthreads.traffic.loader.TrafficRssLoader;
@@ -295,13 +296,12 @@ public class TrafficDataListFragment extends Fragment implements IItemClickListe
     @Override
     public void onLongClick(TrafficRecord record)
     {
-        Context context = getActivity();
-        CharSequence text = "Long Click!";
-        int duration = Toast.LENGTH_SHORT;
+        // Build intent and add data.
+        Intent mapIntent = new Intent(getActivity(), MapActivity.class);
+        mapIntent.putExtra(MapActivity.ARG_ITEM, record);
 
-        Toast toast = Toast.makeText(context, text, duration);
-
-        toast.show();
+        // Launch from intent
+        startActivity(mapIntent);
     }
 
     /**
