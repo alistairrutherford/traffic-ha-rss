@@ -27,7 +27,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.netthreads.traffic.R;
 
@@ -35,7 +36,7 @@ import com.netthreads.traffic.R;
  * Map Fragment.
  *
  */
-public class TrafficDataMapFragment extends Fragment
+public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallback
 {
     public static final String ARG_LAT = "lat";
     public static final String ARG_LNG = "lng";
@@ -44,12 +45,41 @@ public class TrafficDataMapFragment extends Fragment
     {
     }
 
+    /**
+     * On Create View.
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     *
+     * @return The view.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
+        SupportMapFragment mapFragment = (SupportMapFragment) getFragmentManager().findFragmentById(R.id.map);
+
+        mapFragment.getMapAsync(this);
+
         return rootView;
+    }
+
+    /**
+     * On Map Ready.
+     *
+     * @param googleMap
+     */
+    @Override
+    public void onMapReady(GoogleMap googleMap)
+    {
+        Bundle bundle = getArguments();
+
+        String categoryClass = bundle.getString(ARG_LAT);
+        String category = bundle.getString(ARG_LNG);
+
+
     }
 }

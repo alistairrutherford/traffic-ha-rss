@@ -29,7 +29,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.netthreads.traffic.domain.TrafficRecord;
-import com.netthreads.traffic.view.TrafficDataDetailsFragment;
 import com.netthreads.traffic.view.TrafficDataMapFragment;
 
 public class MapActivity extends ActionBarActivity
@@ -48,12 +47,14 @@ public class MapActivity extends ActionBarActivity
 
         if (savedInstanceState == null)
         {
+            TrafficDataMapFragment trafficDataMapFragment = new TrafficDataMapFragment();
+
             Bundle bundle = new Bundle();
             bundle.putString(TrafficDataMapFragment.ARG_LAT, data.getLatitude());
             bundle.putString(TrafficDataMapFragment.ARG_LNG, data.getLongitude());
 
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new TrafficDataMapFragment())
+                    .add(R.id.container, trafficDataMapFragment)
                     .commit();
         }
     }

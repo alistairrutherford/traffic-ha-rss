@@ -61,9 +61,15 @@
             android:value="@integer/google_play_services_version" />
 
         <!-- Google Maps Debug Key -->
+        <!--
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyBsmlIdaCHvfDg8zpoIJSUiMu-rH1aRhkU"/>
+        -->
+
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyA56gHBfyfPnU3NFznH0CMJRonmDWdyPoY"/>
 
     </application>
 
