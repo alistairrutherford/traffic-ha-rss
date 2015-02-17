@@ -53,6 +53,8 @@ public class MapActivity extends ActionBarActivity
             bundle.putString(TrafficDataMapFragment.ARG_LAT, data.getLatitude());
             bundle.putString(TrafficDataMapFragment.ARG_LNG, data.getLongitude());
 
+            trafficDataMapFragment.setArguments(bundle);
+
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, trafficDataMapFragment)
                     .commit();

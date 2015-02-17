@@ -27,9 +27,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.netthreads.traffic.R;
 
 /**
@@ -40,6 +42,8 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
 {
     public static final String ARG_LAT = "lat";
     public static final String ARG_LNG = "lng";
+
+    private SupportMapFragment mapFragment;
 
     public TrafficDataMapFragment()
     {
@@ -60,7 +64,7 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
     {
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getFragmentManager().findFragmentById(R.id.map);
+        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
         mapFragment.getMapAsync(this);
 
@@ -77,9 +81,17 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
     {
         Bundle bundle = getArguments();
 
-        String categoryClass = bundle.getString(ARG_LAT);
-        String category = bundle.getString(ARG_LNG);
+        String lat = bundle.getString(ARG_LAT);
+        String lng = bundle.getString(ARG_LNG);
 
+        Double latitude = Double.parseDouble(lat);
+        Double longitude =  Double.parseDouble(lng);
+
+        LatLng location = new LatLng(latitude, longitude);
+
+        googleMap.animateCamera(CameraUpdateFactory.newLatLng(location));
+
+        googleMap.animateCamera(CameraUpdateFactory.zoomBy(5));
 
     }
 }
