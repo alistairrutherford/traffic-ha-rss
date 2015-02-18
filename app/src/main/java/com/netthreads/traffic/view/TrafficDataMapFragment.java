@@ -30,18 +30,20 @@ import android.view.ViewGroup;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.netthreads.traffic.R;
 
 /**
  * Map Fragment.
- *
  */
 public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallback
 {
-    public static final String ARG_LAT = "lat";
-    public static final String ARG_LNG = "lng";
+    public static final String ARG_LAT  = "lat";
+    public static final String ARG_LNG  = "lng";
+    public static final String ARG_INFO = "info";
 
     private SupportMapFragment mapFragment;
 
@@ -55,7 +57,6 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
      * @param inflater
      * @param container
      * @param savedInstanceState
-     *
      * @return The view.
      */
     @Override
@@ -79,19 +80,26 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
     @Override
     public void onMapReady(GoogleMap googleMap)
     {
+        Projection projection = googleMap.getProjection();
+
         Bundle bundle = getArguments();
 
         String lat = bundle.getString(ARG_LAT);
         String lng = bundle.getString(ARG_LNG);
+        String info = bundle.getString(ARG_INFO);
 
         Double latitude = Double.parseDouble(lat);
-        Double longitude =  Double.parseDouble(lng);
+        Double longitude = Double.parseDouble(lng);
 
         LatLng location = new LatLng(latitude.doubleValue(), longitude.doubleValue());
 
+        googleMap.moveCamera(CameraUpdateFactory.zoomTo(13));
+
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
 
-        googleMap.moveCamera(CameraUpdateFactory.zoomBy(5));
+        googleMap.addMarker(new MarkerOptions()
+                .position(location)
+                .title(info));
 
     }
 }
