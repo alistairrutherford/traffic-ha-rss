@@ -87,11 +87,11 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
         Double latitude = Double.parseDouble(lat);
         Double longitude =  Double.parseDouble(lng);
 
-        LatLng location = new LatLng(latitude, longitude);
+        LatLng location = new LatLng(latitude.doubleValue(), longitude.doubleValue());
 
-        googleMap.animateCamera(CameraUpdateFactory.newLatLng(location));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
 
-        googleMap.animateCamera(CameraUpdateFactory.zoomBy(5));
+        googleMap.moveCamera(CameraUpdateFactory.zoomBy(5));
 
     }
 }
