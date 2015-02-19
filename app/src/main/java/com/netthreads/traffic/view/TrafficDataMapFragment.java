@@ -59,7 +59,6 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
 
     /**
      * Construct fragment.
-     *
      */
     public TrafficDataMapFragment()
     {
@@ -71,7 +70,6 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
      * @param inflater
      * @param container
      * @param savedInstanceState
-     *
      * @return The view.
      */
     @Override
@@ -103,11 +101,10 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
         String lat = bundle.getString(ARG_LAT);
         String lng = bundle.getString(ARG_LNG);
 
-        // load region and generate view bounds.
+        // Load region and generate view bounds.
         LatLngBounds bounds = populateMarkers(map, region);
 
-        // Set the camera to the greatest possible zoom level that includes the
-        // bounds
+        // Set the camera to the greatest possible zoom level that includes the bounds
         map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 0));
 
         // Centre if directed to.

@@ -298,6 +298,7 @@ public class TrafficDataListFragment extends Fragment implements IItemClickListe
     {
         // Build intent and add data.
         Intent mapIntent = new Intent(getActivity(), MapActivity.class);
+        mapIntent.putExtra(MapActivity.ARG_REGION, lastRegion);
         mapIntent.putExtra(MapActivity.ARG_ITEM, record);
 
         // Launch from intent
