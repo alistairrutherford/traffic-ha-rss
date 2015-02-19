@@ -31,6 +31,7 @@ import com.netthreads.traffic.view.TrafficDataMapFragment;
 
 public class MapActivity extends ActionBarActivity
 {
+    public static final String ARG_REGION = "dataRegion";
     public static final String ARG_ITEM = "item";
 
     @Override
@@ -40,17 +41,24 @@ public class MapActivity extends ActionBarActivity
 
         setContentView(R.layout.activity_map);
 
-        // Extract bundle item.
-        TrafficRecord data = (TrafficRecord) getIntent().getSerializableExtra(ARG_ITEM);
-
         if (savedInstanceState == null)
         {
-            TrafficDataMapFragment trafficDataMapFragment = new TrafficDataMapFragment();
-
             Bundle bundle = new Bundle();
-            bundle.putString(TrafficDataMapFragment.ARG_LAT, data.getLatitude());
-            bundle.putString(TrafficDataMapFragment.ARG_LNG, data.getLongitude());
-            bundle.putString(TrafficDataMapFragment.ARG_INFO, data.getTitle());
+
+            String region = getIntent().getExtras().getString(ARG_REGION);
+
+            bundle.putString(TrafficDataMapFragment.ARG_REGION, region);
+
+            // Extract bundle item.
+            TrafficRecord data = (TrafficRecord) getIntent().getSerializableExtra(ARG_ITEM);
+
+            if (data != null)
+            {
+                bundle.putString(TrafficDataMapFragment.ARG_LAT, data.getLatitude());
+                bundle.putString(TrafficDataMapFragment.ARG_LNG, data.getLongitude());
+            }
+
+            TrafficDataMapFragment trafficDataMapFragment = new TrafficDataMapFragment();
 
             trafficDataMapFragment.setArguments(bundle);
 

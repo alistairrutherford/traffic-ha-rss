@@ -35,6 +35,7 @@ public class MainActivity extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+    private String dataRegion;
 
 
     @Override
@@ -105,6 +106,8 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onNavigationDrawerItemSelected(int position, String dataRegion, String dataUrl)
     {
+        this.dataRegion = dataRegion;
+
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -190,6 +193,13 @@ public class MainActivity extends ActionBarActivity
             case R.id.action_refresh:
                 refreshSelection();
                 break;
+
+            case R.id.action_map:
+                Intent mapIntent = new Intent(this, MapActivity.class);
+                mapIntent.putExtra(MapActivity.ARG_REGION, dataRegion);
+                startActivity(mapIntent);
+                break;
+
             default:
                 break;
         }
