@@ -24,6 +24,7 @@ package com.netthreads.traffic.view;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -140,6 +141,7 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
         map.clear();
 
         Cursor cursor = null;
+        int itemCount = 0;
 
         try
         {
@@ -150,38 +152,47 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
                     SELECT_REGIONS,
                     null);
 
-            while (cursor.isAfterLast() == false)
+            itemCount =  cursor.getCount();
+
+            if (itemCount > 0)
             {
-                String categoryClass = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_CATEGORY_CLASS));
-                String category = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_CATEGORY));
-                String severity = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_SEVERITY));
-                String road = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_ROAD));
-                String title = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_TITLE));
-                String description = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_DESCRIPTION));
-                String latitude = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_LATITUDE));
-                String longitude = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_LONGITUDE));
+                while (!cursor.isAfterLast())
+                {
+                    String categoryClass = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_CATEGORY_CLASS));
+                    String category = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_CATEGORY));
+                    String severity = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_SEVERITY));
+                    String road = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_ROAD));
+                    String title = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_TITLE));
+                    String description = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_DESCRIPTION));
+                    String latitude = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_LATITUDE));
+                    String longitude = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_LONGITUDE));
 
-                Double lat = Double.parseDouble(latitude);
-                Double lng = Double.parseDouble(longitude);
+                    Double lat = Double.parseDouble(latitude);
+                    Double lng = Double.parseDouble(longitude);
 
-                LatLng location = new LatLng(lat, lng);
+                    LatLng location = new LatLng(lat, lng);
 
-                builder.include(new LatLng(lat, lng));
+                    builder.include(new LatLng(lat, lng));
 
-                // TODO color according to severity
-                // TODO change marker for category class
-                map.addMarker(new MarkerOptions()
-                        .position(location)
-                        .title(title));
+                    // TODO color according to severity
+                    // TODO change marker for category class
+                    map.addMarker(new MarkerOptions()
+                            .position(location)
+                            .title(title));
 
-                // Next
-                cursor.moveToNext();
+                    // Next
+                    cursor.moveToNext();
+                }
             }
 
         }
+        catch(Throwable t)
+        {
+            Log.e("", t.getLocalizedMessage());
+        }
         finally
         {
-            if (cursor != null)
+            if (cursor != null && (itemCount > 0))
             {
                 cursor.close();
             }
