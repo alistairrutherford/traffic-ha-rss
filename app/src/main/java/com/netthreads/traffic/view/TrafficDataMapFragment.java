@@ -42,7 +42,9 @@ import com.netthreads.traffic.domain.TrafficRecord;
 import com.netthreads.traffic.provider.TrafficDataRecordProvider;
 
 /**
- * Map Fragment.
+ * Map Fragment
+ * <p/>
+ * Will populate map with data from specified region and optionally centre and zoom to supplied point.
  */
 public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallback
 {
@@ -54,9 +56,6 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
 
     private String[] SELECT_REGIONS = {""};
     private String WHERE_REGION = TrafficRecord.TEXT_REGION + "= ?";
-
-    private LatLng DEFAULT_BOUNDS_NE = new LatLng(55.811741, 1.768960);
-    private LatLng DEFAULT_BOUNDS_SW = new LatLng(49.871159, -6.379880);
 
     /**
      * Construct fragment.
@@ -92,21 +91,19 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
      * @param map
      */
     @Override
-    public void onMapReady(GoogleMap map)
+    public void onMapReady(final GoogleMap map)
     {
-        Projection projection = map.getProjection();
-
         Bundle bundle = getArguments();
 
+        // Unbundle
         String region = bundle.getString(ARG_REGION);
         String lat = bundle.getString(ARG_LAT);
         String lng = bundle.getString(ARG_LNG);
 
         // Load region and generate view bounds.
-        LatLngBounds bounds = populateMarkers(map, region);
+        final LatLngBounds bounds = populateMarkers(map, region);
 
-        // Set the camera to the greatest possible zoom level that includes the bounds
-        map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 0));
+        map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 30));
 
         // Centre if directed to.
         if (lat != null && lng != null)
@@ -120,6 +117,15 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
 
             map.moveCamera(CameraUpdateFactory.newLatLng(location));
         }
+
+        map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback()
+        {
+            @Override
+            public void onMapLoaded()
+            {
+                map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 30));
+            }
+        });
 
     }
 
@@ -135,8 +141,8 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
         LatLngBounds.Builder builder = LatLngBounds.builder();
 
         // Default to England bounds in case there is no data.
-        builder.include(DEFAULT_BOUNDS_NE);
-        builder.include(DEFAULT_BOUNDS_SW);
+        builder.include(Defaults.DEFAULT_BOUNDS_NE);
+        builder.include(Defaults.DEFAULT_BOUNDS_SW);
 
         map.clear();
 
@@ -152,10 +158,12 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
                     SELECT_REGIONS,
                     null);
 
-            itemCount =  cursor.getCount();
+            itemCount = cursor.getCount();
 
             if (itemCount > 0)
             {
+                cursor.moveToFirst();
+
                 while (!cursor.isAfterLast())
                 {
                     String categoryClass = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_CATEGORY_CLASS));
@@ -186,7 +194,7 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
             }
 
         }
-        catch(Throwable t)
+        catch (Throwable t)
         {
             Log.e("", t.getLocalizedMessage());
         }
