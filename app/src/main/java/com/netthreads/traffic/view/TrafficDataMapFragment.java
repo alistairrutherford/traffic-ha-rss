@@ -21,18 +21,20 @@
 
 package com.netthreads.traffic.view;
 
+import android.annotation.SuppressLint;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -49,13 +51,13 @@ import com.netthreads.traffic.provider.TrafficDataRecordProvider;
 public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallback
 {
     public static final String ARG_REGION = "region";
-    public static final String ARG_LAT = "lat";
-    public static final String ARG_LNG = "lng";
+    public static final String ARG_LAT    = "lat";
+    public static final String ARG_LNG    = "lng";
 
     private SupportMapFragment mapFragment;
 
     private String[] SELECT_REGIONS = {""};
-    private String WHERE_REGION = TrafficRecord.TEXT_REGION + "= ?";
+    private String   WHERE_REGION   = TrafficRecord.TEXT_REGION + "= ?";
 
     /**
      * Construct fragment.
@@ -97,26 +99,11 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
 
         // Unbundle
         String region = bundle.getString(ARG_REGION);
-        String lat = bundle.getString(ARG_LAT);
-        String lng = bundle.getString(ARG_LNG);
+        final String lat = bundle.getString(ARG_LAT);
+        final String lng = bundle.getString(ARG_LNG);
 
         // Load region and generate view bounds.
         final LatLngBounds bounds = populateMarkers(map, region);
-
-        map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 30));
-
-        // Centre if directed to.
-        if (lat != null && lng != null)
-        {
-            Double latitude = Double.parseDouble(lat);
-            Double longitude = Double.parseDouble(lng);
-
-            LatLng location = new LatLng(latitude.doubleValue(), longitude.doubleValue());
-
-            map.moveCamera(CameraUpdateFactory.zoomTo(13));
-
-            map.moveCamera(CameraUpdateFactory.newLatLng(location));
-        }
 
         map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback()
         {
@@ -124,8 +111,61 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
             public void onMapLoaded()
             {
                 map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 30));
+
+                // Centre if directed to.
+                if (lat != null && lng != null)
+                {
+                    Double latitude = Double.parseDouble(lat);
+                    Double longitude = Double.parseDouble(lng);
+
+                    LatLng location = new LatLng(latitude.doubleValue(), longitude.doubleValue());
+
+                    map.moveCamera(CameraUpdateFactory.zoomTo(13));
+
+                    map.moveCamera(CameraUpdateFactory.newLatLng(location));
+                }
             }
         });
+
+    }
+
+    private void populateView(final View mapView)
+    {
+        Bundle bundle = getArguments();
+
+
+        String region = bundle.getString(ARG_REGION);
+        final String lat = bundle.getString(ARG_LAT);
+        final String lng = bundle.getString(ARG_LNG);
+
+
+        // Load region and generate view bounds.
+        final LatLngBounds bounds = calculateBounds(region);
+
+        if (mapView.getViewTreeObserver().isAlive())
+        {
+            mapView.getViewTreeObserver().addOnGlobalLayoutListener(
+                    new ViewTreeObserver.OnGlobalLayoutListener()
+                    {
+                        @SuppressLint("NewApi") // We check which build version we are using.
+                        @Override
+                        public void onGlobalLayout()
+                        {
+
+                            // TODO populate map
+                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
+                            {
+                                mapView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                            }
+                            else
+                            {
+                                mapView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            }
+
+                            //mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
+                        }
+                    });
+        }
 
     }
 
@@ -187,6 +227,68 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
                     map.addMarker(new MarkerOptions()
                             .position(location)
                             .title(title));
+
+                    // Next
+                    cursor.moveToNext();
+                }
+            }
+
+        }
+        catch (Throwable t)
+        {
+            Log.e("", t.getLocalizedMessage());
+        }
+        finally
+        {
+            if (cursor != null && (itemCount > 0))
+            {
+                cursor.close();
+            }
+        }
+
+        return builder.build();
+    }
+
+
+    /**
+     * Populate markers on map and return a bounds to set the view bounds.
+     *
+     * @param region
+     * @return The view bounds.
+     */
+    private LatLngBounds calculateBounds(String region)
+    {
+        LatLngBounds.Builder builder = LatLngBounds.builder();
+
+        Cursor cursor = null;
+        int itemCount = 0;
+
+        try
+        {
+            SELECT_REGIONS[0] = region;
+            cursor = getActivity().getContentResolver().query(TrafficDataRecordProvider.CONTENT_URI,
+                    TrafficDataListFragment.PROJECTION,
+                    WHERE_REGION,
+                    SELECT_REGIONS,
+                    null);
+
+            itemCount = cursor.getCount();
+
+            if (itemCount > 0)
+            {
+                cursor.moveToFirst();
+
+                while (!cursor.isAfterLast())
+                {
+                    String latitude = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_LATITUDE));
+                    String longitude = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_LONGITUDE));
+
+                    Double lat = Double.parseDouble(latitude);
+                    Double lng = Double.parseDouble(longitude);
+
+                    LatLng location = new LatLng(lat, lng);
+
+                    builder.include(new LatLng(lat, lng));
 
                     // Next
                     cursor.moveToNext();
