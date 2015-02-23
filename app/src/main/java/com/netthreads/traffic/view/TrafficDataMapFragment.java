@@ -42,6 +42,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.netthreads.traffic.R;
 import com.netthreads.traffic.domain.TrafficRecord;
 import com.netthreads.traffic.provider.TrafficDataRecordProvider;
+import com.netthreads.traffic.visitor.AddMarkerVisitor;
+import com.netthreads.traffic.visitor.CalculateBoundsVisitor;
+import com.netthreads.traffic.visitor.MapVisitor;
 
 /**
  * Map Fragment
@@ -51,13 +54,14 @@ import com.netthreads.traffic.provider.TrafficDataRecordProvider;
 public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallback
 {
     public static final String ARG_REGION = "region";
-    public static final String ARG_LAT    = "lat";
-    public static final String ARG_LNG    = "lng";
+    public static final String ARG_LAT = "lat";
+    public static final String ARG_LNG = "lng";
 
     private SupportMapFragment mapFragment;
+    private GoogleMap map;
 
     private String[] SELECT_REGIONS = {""};
-    private String   WHERE_REGION   = TrafficRecord.TEXT_REGION + "= ?";
+    private String WHERE_REGION = TrafficRecord.TEXT_REGION + "= ?";
 
     /**
      * Construct fragment.
@@ -84,6 +88,10 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
 
         mapFragment.getMapAsync(this);
 
+        this.map = mapFragment.getMap();
+
+        populateView(rootView);
+
         return rootView;
     }
 
@@ -97,21 +105,20 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
     {
         Bundle bundle = getArguments();
 
-        // Unbundle
+        // Get Data
         String region = bundle.getString(ARG_REGION);
         final String lat = bundle.getString(ARG_LAT);
         final String lng = bundle.getString(ARG_LNG);
 
-        // Load region and generate view bounds.
-        final LatLngBounds bounds = populateMarkers(map, region);
+        // Draw all markers
+        populateMap(region);
 
+        // Zoom into single marker if data supplied.
         map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback()
         {
             @Override
             public void onMapLoaded()
             {
-                map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 30));
-
                 // Centre if directed to.
                 if (lat != null && lng != null)
                 {
@@ -129,15 +136,18 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
 
     }
 
+    /**
+     * Populate view.
+     *
+     * @param mapView
+     */
     private void populateView(final View mapView)
     {
         Bundle bundle = getArguments();
 
-
         String region = bundle.getString(ARG_REGION);
         final String lat = bundle.getString(ARG_LAT);
         final String lng = bundle.getString(ARG_LNG);
-
 
         // Load region and generate view bounds.
         final LatLngBounds bounds = calculateBounds(region);
@@ -151,18 +161,16 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
                         @Override
                         public void onGlobalLayout()
                         {
-
                             // TODO populate map
                             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
                             {
                                 mapView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                            }
-                            else
+                            } else
                             {
                                 mapView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                             }
 
-                            //mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
+                            map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10));
                         }
                     });
         }
@@ -170,22 +178,42 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
     }
 
     /**
-     * Populate markers on map and return a bounds to set the view bounds.
+     * Calculate data bounds.
      *
-     * @param map
      * @param region
      * @return The view bounds.
      */
-    private LatLngBounds populateMarkers(GoogleMap map, String region)
+    private LatLngBounds calculateBounds(String region)
     {
-        LatLngBounds.Builder builder = LatLngBounds.builder();
+        CalculateBoundsVisitor visitor = new CalculateBoundsVisitor();
 
-        // Default to England bounds in case there is no data.
-        builder.include(Defaults.DEFAULT_BOUNDS_NE);
-        builder.include(Defaults.DEFAULT_BOUNDS_SW);
+        processData(region, map, visitor);
 
-        map.clear();
+        LatLngBounds bounds = visitor.getLatLngBounds();
 
+        return bounds;
+    }
+
+    /**
+     * Populate map with markers.
+     *
+     * @param region
+     * @return The view bounds.
+     */
+    private void populateMap(String region)
+    {
+        AddMarkerVisitor visitor = new AddMarkerVisitor(map);
+
+        processData(region, map, visitor);
+    }
+
+    /**
+     * Process data using defined visitor.
+     *
+     * @return The view bounds.
+     */
+    private void processData(String region, GoogleMap map, MapVisitor visitor)
+    {
         Cursor cursor = null;
         int itemCount = 0;
 
@@ -210,23 +238,18 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
                     String category = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_CATEGORY));
                     String severity = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_SEVERITY));
                     String road = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_ROAD));
-                    String title = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_TITLE));
                     String description = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_DESCRIPTION));
+
                     String latitude = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_LATITUDE));
                     String longitude = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_LONGITUDE));
+                    String title = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_TITLE));
 
                     Double lat = Double.parseDouble(latitude);
                     Double lng = Double.parseDouble(longitude);
 
                     LatLng location = new LatLng(lat, lng);
 
-                    builder.include(new LatLng(lat, lng));
-
-                    // TODO color according to severity
-                    // TODO change marker for category class
-                    map.addMarker(new MarkerOptions()
-                            .position(location)
-                            .title(title));
+                    visitor.visit(new LatLng(lat, lng), title);
 
                     // Next
                     cursor.moveToNext();
@@ -245,69 +268,6 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
                 cursor.close();
             }
         }
-
-        return builder.build();
     }
 
-
-    /**
-     * Populate markers on map and return a bounds to set the view bounds.
-     *
-     * @param region
-     * @return The view bounds.
-     */
-    private LatLngBounds calculateBounds(String region)
-    {
-        LatLngBounds.Builder builder = LatLngBounds.builder();
-
-        Cursor cursor = null;
-        int itemCount = 0;
-
-        try
-        {
-            SELECT_REGIONS[0] = region;
-            cursor = getActivity().getContentResolver().query(TrafficDataRecordProvider.CONTENT_URI,
-                    TrafficDataListFragment.PROJECTION,
-                    WHERE_REGION,
-                    SELECT_REGIONS,
-                    null);
-
-            itemCount = cursor.getCount();
-
-            if (itemCount > 0)
-            {
-                cursor.moveToFirst();
-
-                while (!cursor.isAfterLast())
-                {
-                    String latitude = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_LATITUDE));
-                    String longitude = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_LONGITUDE));
-
-                    Double lat = Double.parseDouble(latitude);
-                    Double lng = Double.parseDouble(longitude);
-
-                    LatLng location = new LatLng(lat, lng);
-
-                    builder.include(new LatLng(lat, lng));
-
-                    // Next
-                    cursor.moveToNext();
-                }
-            }
-
-        }
-        catch (Throwable t)
-        {
-            Log.e("", t.getLocalizedMessage());
-        }
-        finally
-        {
-            if (cursor != null && (itemCount > 0))
-            {
-                cursor.close();
-            }
-        }
-
-        return builder.build();
-    }
 }
