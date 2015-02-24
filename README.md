@@ -9,6 +9,7 @@ Android Road Traffic application which pulls down data from the Highways Agency 
 - Background loader.
 - Actionbar support libraries.
 - Settings View.
+- Map view.
 - Filterable category types.
 - Content provider persistence.
 - Android Studio based project.
