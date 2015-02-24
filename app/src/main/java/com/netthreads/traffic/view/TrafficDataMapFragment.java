@@ -112,28 +112,6 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
 
         // Draw all markers
         populateMap(region);
-
-        // Zoom into single marker if data supplied.
-        map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback()
-        {
-            @Override
-            public void onMapLoaded()
-            {
-                // Centre if directed to.
-                if (lat != null && lng != null)
-                {
-                    Double latitude = Double.parseDouble(lat);
-                    Double longitude = Double.parseDouble(lng);
-
-                    LatLng location = new LatLng(latitude.doubleValue(), longitude.doubleValue());
-
-                    map.moveCamera(CameraUpdateFactory.zoomTo(13));
-
-                    map.moveCamera(CameraUpdateFactory.newLatLng(location));
-                }
-            }
-        });
-
     }
 
     /**
@@ -171,6 +149,18 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
                             }
 
                             map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10));
+
+                            if (lat != null && lng != null)
+                            {
+                                Double latitude = Double.parseDouble(lat);
+                                Double longitude = Double.parseDouble(lng);
+
+                                LatLng location = new LatLng(latitude.doubleValue(), longitude.doubleValue());
+
+                                map.moveCamera(CameraUpdateFactory.zoomTo(13));
+
+                                map.moveCamera(CameraUpdateFactory.newLatLng(location));
+                            }
                         }
                     });
         }
@@ -249,6 +239,7 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
 
                     LatLng location = new LatLng(lat, lng);
 
+                    // Visit the data
                     visitor.visit(new LatLng(lat, lng), title);
 
                     // Next
@@ -259,7 +250,7 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
         }
         catch (Throwable t)
         {
-            Log.e("", t.getLocalizedMessage());
+            Log.e(TrafficDataMapFragment.class.getCanonicalName(), t.getLocalizedMessage());
         }
         finally
         {
