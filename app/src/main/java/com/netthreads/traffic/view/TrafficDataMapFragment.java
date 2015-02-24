@@ -117,6 +117,9 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
     /**
      * Populate view.
      *
+     * Note: we have to to set the view bounds on the layout callback. We can do it in the map
+     * ready callback but then the view flips visibly between two view and zoom levels.
+     *
      * @param mapView
      */
     private void populateView(final View mapView)
