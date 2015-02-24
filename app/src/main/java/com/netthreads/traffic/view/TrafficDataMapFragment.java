@@ -53,13 +53,16 @@ import com.netthreads.traffic.visitor.CursorVisitor;
  * You will notice there is a lot of faffing around trying to get the view bounds before the view is
  * rendered. We don't want any flipping around when the map is drawn.
  * <p/>
- * Also, 'visitors'. Your mileage may vary.
+ * Also, 'visitors'. Well, your mileage may vary. I like em.
  */
 public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallback
 {
     public static final String ARG_REGION = "region";
     public static final String ARG_LAT    = "lat";
     public static final String ARG_LNG    = "lng";
+
+    private int SINGLE_MARKER_ZOOM = 13;
+    private int MAP_VIEW_BORDER    = 20;
 
     private SupportMapFragment mapFragment;
     private GoogleMap          map;
@@ -94,7 +97,7 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
 
         this.map = mapFragment.getMap();
 
-        populateView(rootView);
+        setupView(rootView);
 
         return rootView;
     }
@@ -117,11 +120,11 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
     }
 
     /**
-     * Populate view.
+     * Setup view.
      *
      * @param mapView
      */
-    private void populateView(final View mapView)
+    private void setupView(final View mapView)
     {
         Bundle bundle = getArguments();
 
@@ -159,13 +162,13 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
 
                                 LatLng location = new LatLng(latitude.doubleValue(), longitude.doubleValue());
 
-                                map.moveCamera(CameraUpdateFactory.zoomTo(13));
+                                map.moveCamera(CameraUpdateFactory.zoomTo(SINGLE_MARKER_ZOOM));
 
                                 map.moveCamera(CameraUpdateFactory.newLatLng(location));
                             }
                             else
                             {
-                                map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
+                                map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, MAP_VIEW_BORDER));
                             }
                         }
                     });
