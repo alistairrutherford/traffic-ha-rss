@@ -186,7 +186,7 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
     {
         CalculateBoundsVisitor visitor = new CalculateBoundsVisitor();
 
-        visitData(region, map, visitor);
+        visitData(region, visitor);
 
         LatLngBounds bounds = visitor.getLatLngBounds();
 
@@ -202,7 +202,7 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
     {
         AddMarkerVisitor visitor = new AddMarkerVisitor(map);
 
-        visitData(region, map, visitor);
+        visitData(region, visitor);
     }
 
     /**
@@ -210,7 +210,7 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
      *
      * @return The view bounds.
      */
-    private void visitData(String region, GoogleMap map, CursorVisitor visitor)
+    private void visitData(String region, CursorVisitor visitor)
     {
         Cursor cursor = null;
         int itemCount = 0;
