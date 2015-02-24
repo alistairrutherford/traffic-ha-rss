@@ -21,15 +21,17 @@
 
 package com.netthreads.traffic.visitor;
 
-import android.content.Context;
+import android.database.Cursor;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.netthreads.traffic.domain.TrafficRecord;
 
 /**
  * Calculate bounds.
+ *
  */
-public class CalculateBoundsVisitor implements MapVisitor
+public class CalculateBoundsVisitor implements CursorVisitor
 {
     private LatLngBounds.Builder builder = LatLngBounds.builder();
 
@@ -39,9 +41,16 @@ public class CalculateBoundsVisitor implements MapVisitor
     }
 
     @Override
-    public void visit(LatLng latLng, String text)
+    public void visit(Cursor cursor)
     {
-        builder.include(latLng);
+        String latitude = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_LATITUDE));
+        String longitude = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_LONGITUDE));
+        String title = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_TITLE));
+
+        Double lat = Double.parseDouble(latitude);
+        Double lng = Double.parseDouble(longitude);
+
+        builder.include(new LatLng(lat, lng));
     }
 
     public LatLngBounds getLatLngBounds()

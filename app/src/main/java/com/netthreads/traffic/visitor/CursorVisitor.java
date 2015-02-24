@@ -21,11 +21,13 @@
 
 package com.netthreads.traffic.visitor;
 
-import com.google.android.gms.maps.model.LatLng;
+import android.database.Cursor;
 
 /**
+ * Let's visit the data via it's cursor as we iterate across a set of results.
+ *
  */
-public interface MapVisitor
+public interface CursorVisitor
 {
-    public void visit(LatLng latLng, String text);
+    public void visit(Cursor cursor);
 }

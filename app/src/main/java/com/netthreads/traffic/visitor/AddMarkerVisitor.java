@@ -21,17 +21,17 @@
 
 package com.netthreads.traffic.visitor;
 
-import android.content.Context;
+import android.database.Cursor;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.netthreads.traffic.domain.TrafficRecord;
 
 /**
  * Add marker to map.
- *
  */
-public class AddMarkerVisitor implements MapVisitor
+public class AddMarkerVisitor implements CursorVisitor
 {
     private GoogleMap map;
 
@@ -41,10 +41,20 @@ public class AddMarkerVisitor implements MapVisitor
     }
 
     @Override
-    public void visit(LatLng latLng, String text)
+    public void visit(Cursor cursor)
     {
+        String categoryClass = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_CATEGORY_CLASS));
+        String title = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_TITLE));
+        String severity = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_SEVERITY));
+        String latitude = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_LATITUDE));
+        String longitude = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_LONGITUDE));
+
+        Double lat = Double.parseDouble(latitude);
+        Double lng = Double.parseDouble(longitude);
+
+        // TODO icon class and colour.
         map.addMarker(new MarkerOptions()
-                .position(latLng)
-                .title(text));
+                .position(new LatLng(lat, lng))
+                .title(title));
     }
 }
