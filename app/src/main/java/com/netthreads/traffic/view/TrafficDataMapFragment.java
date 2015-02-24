@@ -208,7 +208,8 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
     /**
      * Process data using defined visitor.
      *
-     * @return The view bounds.
+     * @param region
+     * @param visitor
      */
     private void visitData(String region, CursorVisitor visitor)
     {
