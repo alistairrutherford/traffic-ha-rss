@@ -242,7 +242,7 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
         }
         catch (Throwable t)
         {
-            Log.e("", t.getLocalizedMessage());
+            Log.e("visitData", t.getLocalizedMessage());
         }
         finally
         {

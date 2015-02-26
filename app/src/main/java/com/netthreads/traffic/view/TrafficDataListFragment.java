@@ -75,16 +75,16 @@ public class TrafficDataListFragment extends Fragment implements IItemClickListe
             };
 
     private String[] SELECT_REGIONS = {""};
-    private String   WHERE_REGION   = TrafficRecord.TEXT_REGION + "= ?";
+    private String WHERE_REGION = TrafficRecord.TEXT_REGION + "= ?";
 
     /**
      * The fragment arguments.
      */
     private static final String ARG_DATA_REGION = "data_region";
-    private static final String ARG_DATA_URL    = "data_url";
+    private static final String ARG_DATA_URL = "data_url";
 
-    private RecyclerView               recyclerView;
-    private TrafficDataCursorAdapter   adapter;
+    private RecyclerView recyclerView;
+    private TrafficDataCursorAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
     private String lastUrl;
@@ -131,7 +131,7 @@ public class TrafficDataListFragment extends Fragment implements IItemClickListe
             }
             catch (XmlPullParserException e)
             {
-                Log.e(this.getClass().getCanonicalName(), e.getLocalizedMessage());
+                Log.e("onCreateLoader", e.getLocalizedMessage());
             }
 
             return trafficDataLoader;
@@ -152,12 +152,13 @@ public class TrafficDataListFragment extends Fragment implements IItemClickListe
             activity.setSupportProgressBarIndeterminate(false);
             activity.setSupportProgressBarVisibility(false);
 
+            // On data loaded get a cursor into the new data and swap into into the list view.
             SELECT_REGIONS[0] = lastRegion;
             Cursor cursor = getActivity().getContentResolver().query(TrafficDataRecordProvider.CONTENT_URI,
-                                                                    TrafficDataListFragment.PROJECTION,
-                                                                    WHERE_REGION,
-                                                                    SELECT_REGIONS,
-                                                                    null);
+                    TrafficDataListFragment.PROJECTION,
+                    WHERE_REGION,
+                    SELECT_REGIONS,
+                    null);
 
             adapter.swapCursor(cursor);
 
@@ -226,7 +227,8 @@ public class TrafficDataListFragment extends Fragment implements IItemClickListe
     /**
      * Refresh data in view by restarting loader.
      *
-     * @param url Selected data url.
+     * @param url    Selected data url.
+     * @param region Selected data region.
      */
     public void refresh(String url, String region)
     {

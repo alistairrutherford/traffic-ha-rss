@@ -117,7 +117,7 @@ public class MainActivity extends ActionBarActivity
     }
 
     /**
-     * Handle refresh view.
+     * Handle refresh data.
      *
      */
     @Override

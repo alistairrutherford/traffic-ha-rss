@@ -97,6 +97,8 @@ public class NavigationDrawerFragment extends Fragment
         // Build section titles.
         selectionTitles = buildSectionTitles(dataMap);
 
+        // TODO create hidden preferences and store dtLastLoaded time for each region.
+
         // Select either the default item (0) or the last selected item.
         selectItem(currentSelectedPosition);
     }
