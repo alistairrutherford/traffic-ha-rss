@@ -16,6 +16,7 @@ import android.view.Window;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.netthreads.traffic.view.NavigationDrawerFragment;
+import com.netthreads.traffic.view.PreferencesHelper;
 import com.netthreads.traffic.view.TrafficDataListFragment;
 
 /**
@@ -75,7 +76,6 @@ public class MainActivity extends ActionBarActivity
 
     /**
      * Check for Google Play services and direct user to play store if not found.
-     *
      */
     @Override
     protected void onResume()
@@ -119,14 +119,33 @@ public class MainActivity extends ActionBarActivity
     /**
      * Handle refresh data.
      *
+     * We check to see if the last loaded timestamp should be checked or not.
+     *
+     * @param force Don't check just load.
      */
     @Override
-    public void refreshSelection()
+    public void refreshSelection(boolean force)
     {
-        TrafficDataListFragment fragment = (TrafficDataListFragment) getSupportFragmentManager().findFragmentById(R.id.container);
-        if (fragment != null)
+        boolean refresh = true;
+        if (!force)
         {
-            fragment.refresh(null, null);
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+            long lastLoad = PreferencesHelper.getRegionLastLoaded(sharedPreferences, dataRegion);
+
+            if (System.currentTimeMillis() - lastLoad < 10000)
+            {
+                refresh = false;
+            }
+        }
+
+        if (refresh)
+        {
+            TrafficDataListFragment fragment = (TrafficDataListFragment) getSupportFragmentManager().findFragmentById(R.id.container);
+            if (fragment != null)
+            {
+                fragment.refresh(null, null);
+            }
         }
     }
 
@@ -191,7 +210,7 @@ public class MainActivity extends ActionBarActivity
                 break;
 
             case R.id.action_refresh:
-                refreshSelection();
+                refreshSelection(true);
                 break;
 
             case R.id.action_map:
@@ -229,7 +248,7 @@ public class MainActivity extends ActionBarActivity
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
                 boolean autoUpdate = sharedPreferences.getBoolean(SettingsActivity.PREF_AUTO_UPDATE, true);
 
-                refreshSelection();
+                refreshSelection(true);
             }
         }
     }

@@ -82,8 +82,8 @@ public class NavigationDrawerFragment extends Fragment
 
         // Read in the flag indicating whether or not the user has demonstrated awareness of the
         // drawer. See PREF_USER_LEARNED_DRAWER for details.
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        userLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        userLearnedDrawer = sharedPreferences.getBoolean(PREF_USER_LEARNED_DRAWER, false);
 
         if (savedInstanceState != null)
         {
@@ -97,11 +97,13 @@ public class NavigationDrawerFragment extends Fragment
         // Build section titles.
         selectionTitles = buildSectionTitles(dataMap);
 
-        // TODO create hidden preferences and store dtLastLoaded time for each region.
+        // We are going to persist our last loaded date times in preferences.
+        PreferencesHelper.loadRegionLastLoaded(sharedPreferences, selectionTitles);
 
         // Select either the default item (0) or the last selected item.
         selectItem(currentSelectedPosition);
     }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState)
@@ -213,9 +215,8 @@ public class NavigationDrawerFragment extends Fragment
                     // The user manually opened the drawer; store this flag to prevent auto-showing
                     // the navigation drawer automatically in the future.
                     userLearnedDrawer = true;
-                    SharedPreferences sp = PreferenceManager
-                            .getDefaultSharedPreferences(getActivity());
-                    sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                    sharedPreferences.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
                 }
 
                 getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
@@ -379,7 +380,7 @@ public class NavigationDrawerFragment extends Fragment
         /**
          * Refresh data in view.
          */
-        void refreshSelection();
+        void refreshSelection(boolean force);
     }
 
     /**
