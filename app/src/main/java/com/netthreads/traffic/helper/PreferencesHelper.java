@@ -37,7 +37,7 @@ public class PreferencesHelper
      * @param sharedPreferences
      * @param regionNames
      */
-    public static void loadRegionLastLoaded(SharedPreferences sharedPreferences, String[] regionNames)
+    public static void initialiseRegionLastLoaded(SharedPreferences sharedPreferences, String[] regionNames)
     {
         long currentTime = System.currentTimeMillis();
 
@@ -65,7 +65,7 @@ public class PreferencesHelper
     {
         String key = REGION_KEY + region;
 
-        long timestamp = sharedPreferences.getLong(key, 0);
+        long timestamp = sharedPreferences.getLong(key, 1000);
 
         return timestamp;
     }

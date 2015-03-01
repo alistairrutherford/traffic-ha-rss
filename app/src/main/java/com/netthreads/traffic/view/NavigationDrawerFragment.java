@@ -99,7 +99,7 @@ public class NavigationDrawerFragment extends Fragment
         selectionTitles = buildSectionTitles(dataMap);
 
         // We are going to persist our last loaded date times in preferences.
-        PreferencesHelper.loadRegionLastLoaded(sharedPreferences, selectionTitles);
+        PreferencesHelper.initialiseRegionLastLoaded(sharedPreferences, selectionTitles);
 
         // Select either the default item (0) or the last selected item.
         selectItem(currentSelectedPosition);

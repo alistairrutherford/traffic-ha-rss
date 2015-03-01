@@ -129,6 +129,7 @@ public class MainActivity extends ActionBarActivity
         if (fragment != null)
         {
             fragment.refresh(null, null, force);
+            fragment.refresh(null, null, force);
         }
     }
 

@@ -241,7 +241,8 @@ public class TrafficDataListFragment extends Fragment implements IItemClickListe
 
         long timestamp = System.currentTimeMillis();
 
-        // If we are not forcing a refresh of the data then check to see if enough time has elapsed to fetch the data.
+        // If we are not forcing a refresh of the data then check to see if enough time has elapsed
+        // to fetch the data.
         if (!force)
         {
             long lastLoad = PreferencesHelper.getRegionLastLoaded(sharedPreferences, lastRegion);
