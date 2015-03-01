@@ -19,7 +19,7 @@
  *
  */
 
-package com.netthreads.traffic.view;
+package com.netthreads.traffic.defaults;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -31,5 +31,7 @@ public class Defaults
 {
     public static LatLng DEFAULT_BOUNDS_NE = new LatLng(55.811741, 1.768960);
     public static LatLng DEFAULT_BOUNDS_SW = new LatLng(49.871159, -6.379880);
+
+    public static final int REFRESH_TIMEOUT_MSEC = 60000;
 
 }

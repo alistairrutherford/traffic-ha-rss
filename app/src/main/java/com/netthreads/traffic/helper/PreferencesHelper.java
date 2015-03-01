@@ -19,7 +19,7 @@
  *
  */
 
-package com.netthreads.traffic.view;
+package com.netthreads.traffic.helper;
 
 import android.content.SharedPreferences;
 
@@ -68,6 +68,20 @@ public class PreferencesHelper
         long timestamp = sharedPreferences.getLong(key, 0);
 
         return timestamp;
+    }
+
+    /**
+     * Store region last loaded timestamp.
+     *
+     * @param sharedPreferences
+     * @param region
+     * @param timestamp
+     */
+    public static void setRegionLastLoaded(SharedPreferences sharedPreferences, String region, long timestamp)
+    {
+        String key = REGION_KEY + region;
+
+        sharedPreferences.edit().putLong(key, timestamp);
     }
 
 }

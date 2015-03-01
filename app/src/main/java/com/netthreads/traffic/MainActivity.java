@@ -16,7 +16,6 @@ import android.view.Window;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.netthreads.traffic.view.NavigationDrawerFragment;
-import com.netthreads.traffic.view.PreferencesHelper;
 import com.netthreads.traffic.view.TrafficDataListFragment;
 
 /**
@@ -36,7 +35,7 @@ public class MainActivity extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
-    private String dataRegion;
+    private String       dataRegion;
 
 
     @Override
@@ -118,7 +117,7 @@ public class MainActivity extends ActionBarActivity
 
     /**
      * Handle refresh data.
-     *
+     * <p/>
      * We check to see if the last loaded timestamp should be checked or not.
      *
      * @param force Don't check just load.
@@ -126,26 +125,10 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void refreshSelection(boolean force)
     {
-        boolean refresh = true;
-        if (!force)
+        TrafficDataListFragment fragment = (TrafficDataListFragment) getSupportFragmentManager().findFragmentById(R.id.container);
+        if (fragment != null)
         {
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-            long lastLoad = PreferencesHelper.getRegionLastLoaded(sharedPreferences, dataRegion);
-
-            if (System.currentTimeMillis() - lastLoad < 10000)
-            {
-                refresh = false;
-            }
-        }
-
-        if (refresh)
-        {
-            TrafficDataListFragment fragment = (TrafficDataListFragment) getSupportFragmentManager().findFragmentById(R.id.container);
-            if (fragment != null)
-            {
-                fragment.refresh(null, null);
-            }
+            fragment.refresh(null, null, force);
         }
     }
 

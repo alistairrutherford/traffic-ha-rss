@@ -22,10 +22,11 @@
 package com.netthreads.traffic.view;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -36,13 +37,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.netthreads.traffic.DetailsActivity;
 import com.netthreads.traffic.MainActivity;
 import com.netthreads.traffic.MapActivity;
 import com.netthreads.traffic.R;
+import com.netthreads.traffic.defaults.Defaults;
 import com.netthreads.traffic.domain.TrafficRecord;
+import com.netthreads.traffic.helper.PreferencesHelper;
 import com.netthreads.traffic.loader.TrafficRssLoader;
 import com.netthreads.traffic.provider.TrafficDataRecordProvider;
 
@@ -75,16 +77,16 @@ public class TrafficDataListFragment extends Fragment implements IItemClickListe
             };
 
     private String[] SELECT_REGIONS = {""};
-    private String WHERE_REGION = TrafficRecord.TEXT_REGION + "= ?";
+    private String   WHERE_REGION   = TrafficRecord.TEXT_REGION + "= ?";
 
     /**
      * The fragment arguments.
      */
     private static final String ARG_DATA_REGION = "data_region";
-    private static final String ARG_DATA_URL = "data_url";
+    private static final String ARG_DATA_URL    = "data_url";
 
-    private RecyclerView recyclerView;
-    private TrafficDataCursorAdapter adapter;
+    private RecyclerView               recyclerView;
+    private TrafficDataCursorAdapter   adapter;
     private RecyclerView.LayoutManager layoutManager;
 
     private String lastUrl;
@@ -221,7 +223,7 @@ public class TrafficDataListFragment extends Fragment implements IItemClickListe
         lastUrl = dataUrl;
 
         // Load data
-        refresh(dataUrl, dataRegion);
+        refresh(dataUrl, dataRegion, false);
     }
 
     /**
@@ -229,16 +231,41 @@ public class TrafficDataListFragment extends Fragment implements IItemClickListe
      *
      * @param url    Selected data url.
      * @param region Selected data region.
+     * @param force
      */
-    public void refresh(String url, String region)
+    public void refresh(String url, String region, boolean force)
     {
-        setLoading(true);
+        boolean refresh = true;
 
-        Bundle bundle = new Bundle();
-        bundle.putString(ARG_DATA_URL, url);
-        bundle.putString(ARG_DATA_REGION, region);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        getLoaderManager().restartLoader(TrafficRssLoader.LOADER_ID, bundle, dataloaderCallbacks).forceLoad();
+        long timestamp = System.currentTimeMillis();
+
+        // If we are not forcing a refresh of the data then check to see if enough time has elapsed to fetch the data.
+        if (!force)
+        {
+            long lastLoad = PreferencesHelper.getRegionLastLoaded(sharedPreferences, lastRegion);
+
+            long difference = timestamp - lastLoad;
+
+            if (difference < Defaults.REFRESH_TIMEOUT_MSEC)
+            {
+                refresh = false;
+            }
+        }
+
+        if (refresh)
+        {
+            setLoading(true);
+
+            Bundle bundle = new Bundle();
+            bundle.putString(ARG_DATA_URL, url);
+            bundle.putString(ARG_DATA_REGION, region);
+
+            getLoaderManager().restartLoader(TrafficRssLoader.LOADER_ID, bundle, dataloaderCallbacks).forceLoad();
+
+            PreferencesHelper.setRegionLastLoaded(sharedPreferences, region, timestamp);
+        }
     }
 
     /**

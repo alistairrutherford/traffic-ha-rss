@@ -34,6 +34,7 @@ import android.widget.TextView;
 
 import com.netthreads.traffic.R;
 import com.netthreads.traffic.domain.TrafficRecord;
+import com.netthreads.traffic.helper.ImageHelper;
 
 /**
  * Data details fragment containing a simple view.
