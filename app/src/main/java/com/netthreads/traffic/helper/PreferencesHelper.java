@@ -47,7 +47,10 @@ public class PreferencesHelper
 
             if (!sharedPreferences.contains(key))
             {
-                sharedPreferences.edit().putLong(key, currentTime);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                editor.putLong(key, currentTime);
+                editor.commit();
             }
         }
 
@@ -73,6 +76,8 @@ public class PreferencesHelper
     /**
      * Store region last loaded timestamp.
      *
+     * Note: we need a commit after making our change.
+     *
      * @param sharedPreferences
      * @param region
      * @param timestamp
@@ -81,7 +86,10 @@ public class PreferencesHelper
     {
         String key = REGION_KEY + region;
 
-        sharedPreferences.edit().putLong(key, timestamp);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putLong(key, timestamp);
+        editor.commit();
     }
 
 }
