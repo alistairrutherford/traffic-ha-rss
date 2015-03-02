@@ -154,18 +154,9 @@ public class TrafficDataListFragment extends Fragment implements IItemClickListe
             activity.setSupportProgressBarIndeterminate(false);
             activity.setSupportProgressBarVisibility(false);
 
-            // On data loaded get a cursor into the new data and swap into into the list view.
-            SELECT_REGIONS[0] = lastRegion;
-            Cursor cursor = getActivity().getContentResolver().query(TrafficDataRecordProvider.CONTENT_URI,
-                    TrafficDataListFragment.PROJECTION,
-                    WHERE_REGION,
-                    SELECT_REGIONS,
-                    null);
-
-            adapter.swapCursor(cursor);
-
             setLoading(false);
         }
+
 
         /**
          * Reset loader.
@@ -298,6 +289,9 @@ public class TrafficDataListFragment extends Fragment implements IItemClickListe
         adapter = new TrafficDataCursorAdapter(this);
         recyclerView.setAdapter(adapter);
 
+        // onAttach is run before this so adapter will never be null at this point.
+        setAdapterCursor(lastRegion);
+
         return rootView;
     }
 
@@ -333,6 +327,25 @@ public class TrafficDataListFragment extends Fragment implements IItemClickListe
 
         // Launch from intent
         startActivity(mapIntent);
+    }
+
+    /**
+     * Set adapter cursor.
+     */
+    private void setAdapterCursor(String region)
+    {
+        // On data loaded get a cursor into the new data and swap into into the list view.
+        SELECT_REGIONS[0] = region;
+
+        Cursor cursor = getActivity().getContentResolver().query(TrafficDataRecordProvider.CONTENT_URI,
+                TrafficDataListFragment.PROJECTION,
+                WHERE_REGION,
+                SELECT_REGIONS,
+                null);
+
+        int length = cursor.getCount();
+
+        adapter.swapCursor(cursor);
     }
 
     /**

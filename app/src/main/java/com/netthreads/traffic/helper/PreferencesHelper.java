@@ -51,6 +51,8 @@ public class PreferencesHelper
 
                 editor.putLong(key, currentTime);
                 editor.commit();
+
+                long test = getRegionLastLoaded(sharedPreferences, key);
             }
         }
 
@@ -68,7 +70,7 @@ public class PreferencesHelper
     {
         String key = REGION_KEY + region;
 
-        long timestamp = sharedPreferences.getLong(key, 1000);
+        long timestamp = sharedPreferences.getLong(key, 0);
 
         return timestamp;
     }
