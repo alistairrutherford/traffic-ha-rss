@@ -23,8 +23,11 @@
 
 package com.netthreads.traffic;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBarActivity;
+import android.view.MenuItem;
 
 import com.netthreads.traffic.domain.TrafficRecord;
 import com.netthreads.traffic.view.TrafficDataMapFragment;
@@ -55,6 +58,47 @@ public class MapActivity extends ActionBarActivity
                     .add(R.id.container, trafficDataMapFragment)
                     .commit();
         }
+    }
+
+    /**
+     * Navigate with options.
+     *
+     *  Note: You need this or the parent activity onCreate will be called blowing away your
+     *  settings.
+     *
+     * @param item
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                Intent upIntent = getParentActivityIntent();
+                if (upIntent != null)
+                {
+                    if (shouldUpRecreateTask(upIntent))
+                    {
+                        TaskStackBuilder.create(this)
+                                // Add all of this activity's parents to the back stack
+                                .addNextIntentWithParentStack(upIntent)
+                                        // Navigate up to the closest parent
+                                .startActivities();
+                    }
+                    else
+                    {
+                        upIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        navigateUpTo(upIntent);
+                    }
+                }
+                return true;
+
+            case R.id.action_settings:
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

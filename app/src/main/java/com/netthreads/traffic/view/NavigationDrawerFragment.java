@@ -154,6 +154,18 @@ public class NavigationDrawerFragment extends Fragment
         return rootView;
     }
 
+    /**
+     * On save instance state.
+     *
+     * @param outState
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        outState.putInt(STATE_SELECTED_POSITION, currentSelectedPosition);
+    }
+
     public boolean isDrawerOpen()
     {
         return drawerLayout != null && drawerLayout.isDrawerOpen(view);
@@ -289,13 +301,6 @@ public class NavigationDrawerFragment extends Fragment
     {
         super.onDetach();
         navigationDrawerCallbacks = null;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState)
-    {
-        super.onSaveInstanceState(outState);
-        outState.putInt(STATE_SELECTED_POSITION, currentSelectedPosition);
     }
 
     @Override
