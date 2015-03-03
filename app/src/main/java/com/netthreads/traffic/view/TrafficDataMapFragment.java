@@ -78,6 +78,33 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
     }
 
     /**
+     * Create fragment instance.
+     *
+     * @param region
+     * @param data
+     *
+     * @return The fragment instance.
+     */
+    public static final TrafficDataMapFragment newInstance(String region, TrafficRecord data)
+    {
+        Bundle bundle = new Bundle();
+
+        bundle.putString(TrafficDataMapFragment.ARG_REGION, region);
+
+        if (data != null)
+        {
+            bundle.putString(TrafficDataMapFragment.ARG_LAT, data.getLatitude());
+            bundle.putString(TrafficDataMapFragment.ARG_LNG, data.getLongitude());
+        }
+
+        TrafficDataMapFragment fragment = new TrafficDataMapFragment();
+
+        fragment.setArguments(bundle);
+
+        return fragment;
+    }
+
+    /**
      * On Create View.
      *
      * @param inflater

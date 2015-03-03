@@ -43,24 +43,13 @@ public class MapActivity extends ActionBarActivity
 
         if (savedInstanceState == null)
         {
-            Bundle bundle = new Bundle();
-
+            // Extract region
             String region = getIntent().getExtras().getString(ARG_REGION);
-
-            bundle.putString(TrafficDataMapFragment.ARG_REGION, region);
 
             // Extract bundle item.
             TrafficRecord data = (TrafficRecord) getIntent().getSerializableExtra(ARG_ITEM);
 
-            if (data != null)
-            {
-                bundle.putString(TrafficDataMapFragment.ARG_LAT, data.getLatitude());
-                bundle.putString(TrafficDataMapFragment.ARG_LNG, data.getLongitude());
-            }
-
-            TrafficDataMapFragment trafficDataMapFragment = new TrafficDataMapFragment();
-
-            trafficDataMapFragment.setArguments(bundle);
+            TrafficDataMapFragment trafficDataMapFragment = TrafficDataMapFragment.newInstance(region, data);
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, trafficDataMapFragment)
