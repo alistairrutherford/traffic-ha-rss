@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -282,6 +281,11 @@ public class NavigationDrawerFragment extends Fragment
         }
     }
 
+    /**
+     * Handle attaching navigation drawer to owning activity.
+     *
+     * @param activity
+     */
     @Override
     public void onAttach(Activity activity)
     {
@@ -296,6 +300,10 @@ public class NavigationDrawerFragment extends Fragment
         }
     }
 
+    /**
+     * Handle detaching fragment from owning activity.
+     *
+     */
     @Override
     public void onDetach()
     {
@@ -307,6 +315,7 @@ public class NavigationDrawerFragment extends Fragment
     public void onConfigurationChanged(Configuration newConfig)
     {
         super.onConfigurationChanged(newConfig);
+
         // Forward the new configuration the drawer toggle component.
         actionBarDrawerToggle.onConfigurationChanged(newConfig);
     }
