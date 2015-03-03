@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -73,7 +74,7 @@ public class NavigationDrawerFragment extends Fragment
     private boolean fromSavedInstanceState;
     private boolean userLearnedDrawer;
 
-    private String[]            selectionTitles;
+    private String[] selectionTitles;
     private Map<String, String> dataMap;
 
     @Override
@@ -105,7 +106,6 @@ public class NavigationDrawerFragment extends Fragment
         selectItem(currentSelectedPosition);
     }
 
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState)
     {
@@ -121,12 +121,10 @@ public class NavigationDrawerFragment extends Fragment
      * @param inflater
      * @param container
      * @param savedInstanceState
-     *
      * @return The view.
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View rootView = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
 

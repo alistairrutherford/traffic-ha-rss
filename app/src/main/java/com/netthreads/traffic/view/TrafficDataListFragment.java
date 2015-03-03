@@ -77,20 +77,20 @@ public class TrafficDataListFragment extends Fragment implements IItemClickListe
             };
 
     private String[] SELECT_REGIONS = {""};
-    private String   WHERE_REGION   = TrafficRecord.TEXT_REGION + "= ?";
+    private String WHERE_REGION = TrafficRecord.TEXT_REGION + "= ?";
 
     /**
      * The fragment arguments.
      */
     private static final String ARG_DATA_REGION = "data_region";
-    private static final String ARG_DATA_URL    = "data_url";
+    private static final String ARG_DATA_URL = "data_url";
 
-    private RecyclerView               recyclerView;
-    private TrafficDataCursorAdapter   adapter;
+    private RecyclerView recyclerView;
+    private TrafficDataCursorAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    private String lastUrl;
-    private String lastRegion;
+    private String currentUrl;
+    private String currentRegion;
     private boolean loading = false;
 
     // -------------------------------------------------------------------
@@ -111,18 +111,6 @@ public class TrafficDataListFragment extends Fragment implements IItemClickListe
 
             String url = args.getString(ARG_DATA_URL);
             String region = args.getString(ARG_DATA_REGION);
-
-
-            // If we are just refreshing then the url will be passed as null to indicate use the existing value.
-            if (region == null || region.isEmpty())
-            {
-                region = lastRegion;
-            }
-
-            if (url == null || url.isEmpty())
-            {
-                url = lastUrl;
-            }
 
             try
             {
@@ -157,7 +145,6 @@ public class TrafficDataListFragment extends Fragment implements IItemClickListe
             setLoading(false);
         }
 
-
         /**
          * Reset loader.
          *
@@ -175,7 +162,8 @@ public class TrafficDataListFragment extends Fragment implements IItemClickListe
      * Returns a new instance of this fragment for the given section
      * number.
      *
-     * @param dataRegion
+     * @param dataRegion The data region (is always supplied).
+     * @param dataUrl    The data URL (is always supplied).
      * @return New fragment
      */
     public static final TrafficDataListFragment newInstance(String dataRegion, String dataUrl)
@@ -207,11 +195,11 @@ public class TrafficDataListFragment extends Fragment implements IItemClickListe
         String dataRegion = arguments.getString(ARG_DATA_REGION);
         String dataUrl = arguments.getString(ARG_DATA_URL);
 
+        currentRegion = dataRegion;
+        currentUrl = dataUrl;
+
         // Set up activity title
         ((MainActivity) activity).onSectionAttached(dataRegion);
-
-        lastRegion = dataRegion;
-        lastUrl = dataUrl;
 
         // Load data
         refresh(dataUrl, dataRegion, false);
@@ -228,6 +216,17 @@ public class TrafficDataListFragment extends Fragment implements IItemClickListe
     {
         boolean refresh = true;
 
+        // If we are just refreshing then the url will be passed as null to indicate use the existing value.
+        if (region == null || region.isEmpty())
+        {
+            region = currentRegion;
+        }
+
+        if (url == null || url.isEmpty())
+        {
+            url = currentUrl;
+        }
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         long timestamp = System.currentTimeMillis();
@@ -236,7 +235,7 @@ public class TrafficDataListFragment extends Fragment implements IItemClickListe
         // to fetch the data.
         if (!force)
         {
-            long lastLoad = PreferencesHelper.getRegionLastLoaded(sharedPreferences, lastRegion);
+            long lastLoad = PreferencesHelper.getRegionLastLoaded(sharedPreferences, region);
 
             long difference = timestamp - lastLoad;
 
@@ -290,7 +289,7 @@ public class TrafficDataListFragment extends Fragment implements IItemClickListe
         recyclerView.setAdapter(adapter);
 
         // onAttach is run before this so adapter will never be null at this point.
-        setAdapterCursor(lastRegion);
+        setAdapterCursor(currentRegion);
 
         return rootView;
     }
@@ -322,7 +321,7 @@ public class TrafficDataListFragment extends Fragment implements IItemClickListe
     {
         // Build intent and add data.
         Intent mapIntent = new Intent(getActivity(), MapActivity.class);
-        mapIntent.putExtra(MapActivity.ARG_REGION, lastRegion);
+        mapIntent.putExtra(MapActivity.ARG_REGION, currentRegion);
         mapIntent.putExtra(MapActivity.ARG_ITEM, record);
 
         // Launch from intent
