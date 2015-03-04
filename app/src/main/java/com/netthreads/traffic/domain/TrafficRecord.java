@@ -29,7 +29,7 @@ import java.io.Serializable;
 @Table(name = TrafficRecord.TABLE_NAME)
 public class TrafficRecord implements BaseColumns, Serializable
 {
-    public static final String DEFAULT_ICON = "incident_low";
+    public static final String DEFAULT_ICON = "incident_minor";
 
     public static final String TABLE_NAME = "traffic_data_record";
 
