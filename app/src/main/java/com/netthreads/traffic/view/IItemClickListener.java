@@ -29,7 +29,7 @@ import com.netthreads.traffic.domain.TrafficRecord;
  */
 public interface IItemClickListener
 {
-    public void onClick(TrafficRecord testData);
+    public void onClick(TrafficRecord record);
 
-    public void onLongClick(TrafficRecord testData);
+    public void onLongClick(TrafficRecord record);
 }

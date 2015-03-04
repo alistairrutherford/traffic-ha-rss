@@ -21,6 +21,7 @@
 
 package com.netthreads.traffic.view;
 
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +30,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.netthreads.traffic.R;
 import com.netthreads.traffic.domain.TrafficRecord;
 import com.netthreads.traffic.helper.ImageHelper;

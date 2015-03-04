@@ -21,22 +21,29 @@
 
 package com.netthreads.traffic.visitor;
 
+import android.content.Context;
 import android.database.Cursor;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.netthreads.traffic.R;
 import com.netthreads.traffic.domain.TrafficRecord;
+import com.netthreads.traffic.helper.ImageHelper;
+import com.netthreads.traffic.view.TrafficDataHelper;
 
 /**
  * Add marker to map.
  */
 public class AddMarkerVisitor implements CursorVisitor
 {
+    private Context context;
     private GoogleMap map;
 
-    public AddMarkerVisitor(GoogleMap map)
+    public AddMarkerVisitor(Context context, GoogleMap map)
     {
+        this.context = context;
         this.map = map;
     }
 
@@ -52,9 +59,12 @@ public class AddMarkerVisitor implements CursorVisitor
         Double lat = Double.parseDouble(latitude);
         Double lng = Double.parseDouble(longitude);
 
+        String name = TrafficDataHelper.buildIconName(categoryClass, severity);
+
         // TODO icon class and colour.
         map.addMarker(new MarkerOptions()
                 .position(new LatLng(lat, lng))
-                .title(title));
+                .title(title)
+                .icon(BitmapDescriptorFactory.fromBitmap(ImageHelper.getImage(context, name))));
     }
 }

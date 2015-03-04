@@ -227,7 +227,7 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
      */
     private void populateMap(String region)
     {
-        AddMarkerVisitor visitor = new AddMarkerVisitor(map);
+        AddMarkerVisitor visitor = new AddMarkerVisitor(getActivity(), map);
 
         visitData(region, visitor);
     }
