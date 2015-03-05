@@ -23,6 +23,8 @@ package com.netthreads.traffic.visitor;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -38,17 +40,24 @@ import com.netthreads.traffic.view.TrafficDataHelper;
  */
 public class AddMarkerVisitor implements CursorVisitor
 {
-    private Context context;
+    private static final StringBuilder iconName = new StringBuilder(30);
+
     private GoogleMap map;
 
-    public AddMarkerVisitor(Context context, GoogleMap map)
+    public AddMarkerVisitor(GoogleMap map)
     {
-        this.context = context;
         this.map = map;
     }
 
+    /**
+     * Draw markers.
+     *
+     * @param context This is here because we can't hold on to the context in local var.
+     *
+     * @param cursor
+     */
     @Override
-    public void visit(Cursor cursor)
+    public void visit(Context context, Cursor cursor)
     {
         String categoryClass = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_CATEGORY_CLASS));
         String title = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_TITLE));
@@ -59,12 +68,17 @@ public class AddMarkerVisitor implements CursorVisitor
         Double lat = Double.parseDouble(latitude);
         Double lng = Double.parseDouble(longitude);
 
-        String name = TrafficDataHelper.buildIconName(categoryClass, severity);
+        iconName.setLength(0);
+        iconName.append(categoryClass);
+        iconName.append("_");
+        iconName.append(severity);
 
-        // TODO icon class and colour.
+        // NOTE we fetch icon based on category and severity.
+        Bitmap bitmap = ImageHelper.fetchIcon(context, iconName.toString(), TrafficRecord.DEFAULT_ICON);
+
         map.addMarker(new MarkerOptions()
                 .position(new LatLng(lat, lng))
                 .title(title)
-                .icon(BitmapDescriptorFactory.fromBitmap(ImageHelper.getImage(context, name))));
+                .icon(BitmapDescriptorFactory.fromBitmap(bitmap)));
     }
 }

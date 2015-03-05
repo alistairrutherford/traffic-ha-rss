@@ -62,15 +62,17 @@
 
         <!-- Google Maps Debug Key -->
         <!-- mac -->
-        <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyAZhB7-XUgVkbWOoU98Xh_4X1zMbIUq1dc"/>
-
-        <!-- pc -->
         <!--
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyA56gHBfyfPnU3NFznH0CMJRonmDWdyPoY"/> -->
+            android:value="AIzaSyAZhB7-XUgVkbWOoU98Xh_4X1zMbIUq1dc"/>
+            -->
+
+        <!-- pc -->
+
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyA56gHBfyfPnU3NFznH0CMJRonmDWdyPoY"/>
 
 
     </application>

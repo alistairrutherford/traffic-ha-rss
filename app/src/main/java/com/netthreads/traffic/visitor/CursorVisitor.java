@@ -21,6 +21,7 @@
 
 package com.netthreads.traffic.visitor;
 
+import android.content.Context;
 import android.database.Cursor;
 
 /**
@@ -29,5 +30,5 @@ import android.database.Cursor;
  */
 public interface CursorVisitor
 {
-    public void visit(Cursor cursor);
+    public void visit(Context context, Cursor cursor);
 }

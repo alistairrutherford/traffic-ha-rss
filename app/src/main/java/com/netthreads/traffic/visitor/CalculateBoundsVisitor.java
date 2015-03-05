@@ -21,6 +21,7 @@
 
 package com.netthreads.traffic.visitor;
 
+import android.content.Context;
 import android.database.Cursor;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -41,7 +42,7 @@ public class CalculateBoundsVisitor implements CursorVisitor
     }
 
     @Override
-    public void visit(Cursor cursor)
+    public void visit(Context context, Cursor cursor)
     {
         String latitude = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_LATITUDE));
         String longitude = cursor.getString(cursor.getColumnIndex(TrafficRecord.TEXT_LONGITUDE));

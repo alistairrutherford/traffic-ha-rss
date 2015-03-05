@@ -22,6 +22,7 @@
 package com.netthreads.traffic.view;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
@@ -227,7 +228,7 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
      */
     private void populateMap(String region)
     {
-        AddMarkerVisitor visitor = new AddMarkerVisitor(getActivity(), map);
+        AddMarkerVisitor visitor = new AddMarkerVisitor(map);
 
         visitData(region, visitor);
     }
@@ -242,6 +243,8 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
     {
         Cursor cursor = null;
         int itemCount = 0;
+
+        Context context =  getActivity();
 
         try
         {
@@ -260,7 +263,7 @@ public class TrafficDataMapFragment extends Fragment implements OnMapReadyCallba
 
                 while (!cursor.isAfterLast())
                 {
-                    visitor.visit(cursor);
+                    visitor.visit(context, cursor);
 
                     cursor.moveToNext();
                 }
