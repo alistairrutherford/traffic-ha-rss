@@ -30,7 +30,9 @@ https://github.com/alistairrutherford/easy-cp
 
 Main Screen
 
-![Demo](https://github.com/alistairrutherford/images/raw/master/traffic-ha-rss-1.png) 
+![Lisr](https://github.com/alistairrutherford/images/raw/master/traffic-ha-rss-list.png) 
+
+![Lisr](https://github.com/alistairrutherford/images/raw/master/traffic-ha-rss-1.png) 
 
 Navigation Drawer 
 
@@ -40,7 +42,9 @@ Details View
 
 ![Demo](https://github.com/alistairrutherford/images/raw/master/traffic-ha-rss-3.png) 
 
+Map Screen
 
+![Lisr](https://github.com/alistairrutherford/images/raw/master/traffic-ha-rss-map.png) 
 
 License
 --------
