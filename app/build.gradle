@@ -38,6 +38,4 @@ dependencies {
     compile 'com.android.support:appcompat-v7:+'
     compile 'com.google.android.gms:play-services-maps:6.5.87'
     compile project(':easy-cp')
-    compile 'com.mcxiaoke.volley:library-aar:1.0.1'
-    compile 'com.squareup.dagger:dagger-compiler:1.2.2'
 }
