@@ -30,9 +30,9 @@ https://github.com/alistairrutherford/easy-cp
 
 Main Screen
 
-![Lisr](https://github.com/alistairrutherford/images/raw/master/traffic-ha-rss-list.png) 
+![List](https://github.com/alistairrutherford/images/raw/master/traffic-ha-rss-list.png) 
 
-![Lisr](https://github.com/alistairrutherford/images/raw/master/traffic-ha-rss-1.png) 
+![List](https://github.com/alistairrutherford/images/raw/master/traffic-ha-rss-1.png) 
 
 Navigation Drawer 
 
